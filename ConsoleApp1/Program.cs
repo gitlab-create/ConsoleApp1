@@ -20,7 +20,7 @@ namespace ConsoleApp1
         // Main method.
         public static void Main()
         {
-            
+            DeleteFile(@"c:\\newfolder\\abc.txt");
             
 
             //SymmetricAlgorithm symmetricAlgorithm = AesCryptoServiceProvider.Create();
@@ -34,6 +34,14 @@ namespace ConsoleApp1
 
             //Console.ReadLine();
             ////string decryptedData = Decrypt("4SPJ08RTqY0fz75i/zfi1g==");
+        }
+        
+        static void DeleteFile(string path)
+        {
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
         }
 
         static string Encrypt(string TextToEncrypt)
