@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@{
+
+    string formName = "frm_123";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<script language="javascript" type="text/javascript" id="4">
+    //DownloadDocument();
+    function DownloadDocument() {
+        var queryLink = '@Url.Action("GetLoanDocumentImage")';
+        $.get(queryLink, function (data) {
+            var theCtrl = '<object id="obj" type="application/pdf" data="' + data + '"  width="100%" height="100%"></object>'
+
+            $('#pdfdiv').html(theCtrl);
+
+        });
+    }
+    function AddCustomer() {
+        $.ajax({
+                url: '@Url.Content("~/home/ValidateCaptcha")',
+                type: "POST",
+                data: JSON.stringify({recaptcharesponse: $('#g-recaptcha-response').val() }),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data.success == true) {
+                        
+                        window.location.href='@Url.Content("~/Login/Index")?message=Account created successfully, please login.';
+                    }
+                    else if (!data.success) {
+                        
+                        ShowErrorMsg('error', data.error, 'client');
+                    }
+                }
+            });
+    }
+
+
+    @*var addDocumentMappingFormId = "@formName";
+    CreateControl();
+    function CreateControl() {
+
+        var queryLink = '@Url.Action("GetLoanDocumentImage")';
+        console.log(queryLink);
+
+        $.get(queryLink, function (data) {
+            console.log('data: ' + data);
+            window.location = data;
+        });
+
+    }
+
+    function getFormElementById(elementId, formId) {
+        if (elementId) {
+            if (formId) {
+                return $("#" + formId).find(elementId);
+            }
+            else {
+                return $(elementId);
+            }
+        }
+        else {
+            alert("getFormElementById is missing elementId parameter")
+        }
+
+
+    }*@
+</script>
+
+<button name="btnSignUp" tabindex="236" type="button" value="Sign Up"
+        onclick="AddCustomer();" class="signup-btn">
+    Sign Up Now
+</button>
+
+<div id="divTiffCtrl" class="divPdfCtrlLoanDocument">
+
+</div>
+
+<div id="pdfdiv"></div>
+
+
+<div class="g-recaptcha" data-sitekey="6Lf6NKIUAAAAAP9uqwXBPYGMLMz4rBKtnPMn-3Iw"></div>
