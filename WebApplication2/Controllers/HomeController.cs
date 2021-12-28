@@ -127,7 +127,36 @@ namespace WebApplication2.Controllers
             return View();
         }
 
+public static void CombinePDFs(string CommaSeparatedFileNames, string OutputFileName, string LoanNumber)
+        {
+            try
+            {
+                OutputFileName = Sanitizer.GetSafeHtmlFragment(OutputFileName);
 
+                string[] arrFiles = CommaSeparatedFileNames.Trim(',').Split(',');
+                string path = System.Configuration.ConfigurationManager.AppSettings["BreTempDir"].ToString() + "\\" + OutputFileName;
+               
+
+                var regex = new System.Text.RegularExpressions.Regex(@"\.\.|\\|/ ");
+                if (!regex.IsMatch(path))
+                {
+                    using (FileStream InputStream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite))
+                    {
+                        // Genrate and save PDF Here
+                        
+                        if (System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(path);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
         [ValidateInput(true)]
         public ActionResult ValidateCaptcha(string recaptcharesponse)
         {
